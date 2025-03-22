@@ -1,5 +1,5 @@
 async function setup() {
-    const patchExportURL = "export/patch.export.json";
+    const patchExportURL = "export/gb.moylanEQ.export.json";
 
     // Create AudioContext
     const WAContext = window.AudioContext || window.webkitAudioContext;
@@ -122,6 +122,8 @@ function makeSliders(device) {
     // This will allow us to ignore parameter update events while dragging the slider.
     let isDraggingSlider = false;
     let uiElements = {};
+
+    let deviceParameters = device.parameters;
 
     device.parameters.forEach(param => {
         // Subpatchers also have params. If we want to expose top-level
