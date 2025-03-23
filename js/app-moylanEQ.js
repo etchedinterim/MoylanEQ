@@ -83,6 +83,29 @@ async function setup() {
     // (Optional) Attach listeners to outports so you can log messages from the RNBO patcher
     attachOutports(device);
 
+    // User Added
+    const inports = getInports(device);
+    console.log("Inports:");
+    console.log(inports);
+    const parameters = getParameters(device);
+    console.log("Parameters");
+    parameters.forEach((param) => {
+        console.log(param);
+    });
+
+    setupStartStop(device);
+    setupLoop(device);
+    setupStartPoint(device);
+    setupDuration(device);
+    setupFilters(device);
+    setupLow(device);
+    setupLowMid(device);
+    setupMid(device);
+    setupMidHigh(device);
+    setupHigh(device);
+    setupVeryHigh(device);
+    setupGain(device);
+
     // (Optional) Load presets, if any
     // loadPresets(device, patcher);
 
@@ -90,8 +113,10 @@ async function setup() {
     // makeMIDIKeyboard(device);
 
     document.body.onclick = () => {
+        if (context.state === "running") return;
         context.resume();
-    } // audio needs to be started or resumed on click. Very important to keep! Audio will not play without this line.
+        console.log("Audio context resumed");
+      };
 
     // Skip if you're not using guardrails.js
     if (typeof guardrails === "function")
@@ -113,6 +138,213 @@ function loadRNBOScript(version) {
         document.body.append(el);
     });
 }
+
+function setupStartPoint(device) {
+    const startPointText = document.getElementById("startPoint-text");
+    const startPointState = getParameter(device, "audioFile_startPoint");
+    startPointText.value = startPointState.value;
+  
+    startPointText.onchange = () => {
+      if (isNaN(startPointText.value) || startPointText.value < 0) {
+        startPointText.value = startPointState.value;
+      }
+      if (startPointText.value > startPointState.max) {
+        startPointText.value = startPointState.max;
+      }
+      if (startPointText.value < startPointState.min) {
+        startPointText.value = startPointState.min;
+      }
+  
+      // sendMessageToInport(device, "tempo", tempoText.value);
+      // OR
+      startPointState.value = startPointText.value;
+    };
+}
+
+function setupDuration(device) {
+    const durationText = document.getElementById("duration-text");
+    const durationState = getParameter(device, "audioFile_duration");
+    durationText.value = durationState.value;
+  
+    durationText.onchange = () => {
+      if (isNaN(durationText.value) || durationText.value < 0) {
+        durationText.value = durationState.value;
+      }
+      if (durationText.value > durationState.max) {
+        durationText.value = durationState.max;
+      }
+      if (durationText.value < durationState.min) {
+        durationText.value = durationState.min;
+      }
+  
+      // sendMessageToInport(device, "tempo", tempoText.value);
+      // OR
+      durationState.value = durationText.value;
+    };
+}
+
+function setupStartStop(device) {
+    const startToggle = document.getElementById("start-toggle");
+    startToggle.onclick = () => {
+      const messageEvent = new RNBO.MessageEvent(
+        RNBO.TimeNow,
+        "audioFile_play",
+        startToggle.checked ? [1] : [0]
+      );
+      device.scheduleEvent(messageEvent);
+      //OR
+      // sendMessageToInport(device, "audioFile_play", startToggle.checked ? "1" : "0");
+    };
+    const toggleState = getParameter(device, "audioFile_play");
+    startToggle.checked = toggleState.value === 1;
+  }
+
+  function setupLoop(device) {
+    const loopToggle = document.getElementById("loop-toggle");
+    loopToggle.onclick = () => {
+      const messageEvent = new RNBO.MessageEvent(
+        RNBO.TimeNow,
+        "audioFile_loop",
+        loopToggle.checked ? [1] : [0]
+      );
+      device.scheduleEvent(messageEvent);
+      //OR
+      // sendMessageToInport(device, "audioFile_loop", loopToggle.checked ? "1" : "0");
+    };
+    const toggleState = getParameter(device, "audioFile_loop");
+    loopToggle.checked = toggleState.value === 1;
+  }
+
+  function setupFilters(device) {
+    const filtersToggle = document.getElementById("filters-toggle");
+    filtersToggle.onclick = () => {
+      const messageEvent = new RNBO.MessageEvent(
+        RNBO.TimeNow,
+        "filter",
+        filtersToggle.checked ? [1] : [0]
+      );
+      device.scheduleEvent(messageEvent);
+      //OR
+      // sendMessageToInport(device, "audioFile_loop", filtersToggle.checked ? "1" : "0");
+    };
+    const toggleState = getParameter(device, "filter");
+    filtersToggle.checked = toggleState.value === 1;
+  }
+
+  function setupLow(device) {
+    const lowToggle = document.getElementById("low-toggle");
+    lowToggle.onclick = () => {
+      const messageEvent = new RNBO.MessageEvent(
+        RNBO.TimeNow,
+        "low",
+        lowToggle.checked ? [1] : [0]
+      );
+      device.scheduleEvent(messageEvent);
+      //OR
+      // sendMessageToInport(device, "audioFile_loop", lowToggle.checked ? "1" : "0");
+    };
+    const toggleState = getParameter(device, "low");
+    lowToggle.checked = toggleState.value === 1;
+  }
+
+  function setupLowMid(device) {
+    const lowMidToggle = document.getElementById("lowMid-toggle");
+    lowMidToggle.onclick = () => {
+      const messageEvent = new RNBO.MessageEvent(
+        RNBO.TimeNow,
+        "lowMid",
+        lowMidToggle.checked ? [1] : [0]
+      );
+      device.scheduleEvent(messageEvent);
+      //OR
+      // sendMessageToInport(device, "audioFile_loop", lowMidToggle.checked ? "1" : "0");
+    };
+    const toggleState = getParameter(device, "lowMid");
+    lowMidToggle.checked = toggleState.value === 1;
+  }
+
+  function setupMid(device) {
+    const midToggle = document.getElementById("mid-toggle");
+    midToggle.onclick = () => {
+      const messageEvent = new RNBO.MessageEvent(
+        RNBO.TimeNow,
+        "mid",
+        midToggle.checked ? [1] : [0]
+      );
+      device.scheduleEvent(messageEvent);
+      //OR
+      // sendMessageToInport(device, "audioFile_loop", midToggle.checked ? "1" : "0");
+    };
+    const toggleState = getParameter(device, "mid");
+    midToggle.checked = toggleState.value === 1;
+  }
+
+  function setupMidHigh(device) {
+    const midHighToggle = document.getElementById("midHigh-toggle");
+    midHighToggle.onclick = () => {
+      const messageEvent = new RNBO.MessageEvent(
+        RNBO.TimeNow,
+        "midHigh",
+        midHighToggle.checked ? [1] : [0]
+      );
+      device.scheduleEvent(messageEvent);
+      //OR
+      // sendMessageToInport(device, "audioFile_loop", midHighToggle.checked ? "1" : "0");
+    };
+    const toggleState = getParameter(device, "midHigh");
+    midHighToggle.checked = toggleState.value === 1;
+  }
+
+  function setupHigh(device) {
+    const highToggle = document.getElementById("high-toggle");
+    highToggle.onclick = () => {
+      const messageEvent = new RNBO.MessageEvent(
+        RNBO.TimeNow,
+        "high",
+        highToggle.checked ? [1] : [0]
+      );
+      device.scheduleEvent(messageEvent);
+      //OR
+      // sendMessageToInport(device, "audioFile_loop", highToggle.checked ? "1" : "0");
+    };
+    const toggleState = getParameter(device, "high");
+    highToggle.checked = toggleState.value === 1;
+  }
+  
+  function setupVeryHigh(device) {
+    const veryHighToggle = document.getElementById("veryHigh-toggle");
+    veryHighToggle.onclick = () => {
+      const messageEvent = new RNBO.MessageEvent(
+        RNBO.TimeNow,
+        "veryHigh",
+        veryHighToggle.checked ? [1] : [0]
+      );
+      device.scheduleEvent(messageEvent);
+      //OR
+      // sendMessageToInport(device, "audioFile_loop", veryHighToggle.checked ? "1" : "0");
+    };
+    const toggleState = getParameter(device, "veryHigh");
+    veryHighToggle.checked = toggleState.value === 1;
+  }
+
+  function setupGain(device) {
+    const gainSlider = document.getElementById("gain-slider");
+    const gainValue = document.getElementsByClassName("gain-text")[0];
+    gainSlider.value = -12;
+    gainValue.innerHTML = -12;
+  
+    gainSlider.oninput = function () {
+      gainValue.innerHTML = Math.round(this.value);
+      // sendMessageToInport(
+      //   device,
+      //   "track_one_volume",
+      //   (this.value * 100).toString()
+      // );
+      // OR
+      const gainParam = getParameter(device, "gain");
+      gainParam.value = this.value;
+    };
+  }
 
 /* function makeSliders(device) {
     let pdiv = document.getElementById("rnbo-parameter-sliders");
@@ -250,6 +482,39 @@ function loadRNBOScript(version) {
     }
 }
 */
+
+// helper functions
+function getInports(device) {
+    const messages = device.messages;
+    const inports = messages.filter(
+      (message) => message.type === RNBO.MessagePortType.Inport
+    );
+    return inports;
+}
+  
+function getParameters(device) {
+    const parameters = device.parameters;
+    return parameters;
+}
+  
+function getParameter(device, parameterName) {
+    const parameters = device.parameters;
+    const parameter = parameters.find((param) => param.name === parameterName);
+    return parameter;
+}
+  
+function sendMessageToInport(device, inportTag, values) {
+    // Turn the text into a list of numbers (RNBO messages must be numbers, not text)
+    const messsageValues = values.split(/\s+/).map((s) => parseFloat(s));
+  
+    // Send the message event to the RNBO device
+    let messageEvent = new RNBO.MessageEvent(
+      RNBO.TimeNow,
+      inportTag,
+      messsageValues
+    );
+    device.scheduleEvent(messageEvent);
+}
 
 function attachOutports(device) {
     const outports = device.outports;

@@ -51,13 +51,25 @@
                     step="1"
                 />
             </div>
+            <div class="column">
+                <label for="gain-slider">Gain (dB)</label>
+                <input 
+                type="range" 
+                id="gain-slider" 
+                min="-70" 
+                max="6" 
+                value="-12" 
+                step="1"
+                />
+                <label for="gain-slider" class="gain-text">-12</label>
+            </div>
         </div>
         <div id="filters" class="row">
             <div class="column">
-                <label for="filter-toggle">Filters</label>
+                <label for="filters-toggle">Filters</label>
                 <input
                     type="checkbox"
-                    id="filter-toggle"
+                    id="filters-toggle"
                 />
             </div>
             <div class="column">
@@ -114,6 +126,13 @@
             <p id="rnbo-console-readout">RNBO Outport Readout</p>
         </div>
         <h2 id="sub-title">Exercize</h2>
+        <p class="paragraph">
+            <ol>
+                <li>What instruments do you hear?</li>
+                <li>For each frequency band, which instruments are present in that band? Which are absent? </li>
+                <li>For any instruments that span multiple frequency bands, where is the instrument most present?</li>
+            </ol>
+        </p>
         <p>In chapter 4, Moylan writes about the importance of the recordist to evaluate and talk about sound 
             in a clear and definable manner.
             <br>Audio professionals need to:</p>
@@ -132,13 +151,7 @@
                 
             <br><br>This example plays the song "One and Only" by Adele. The song was chosen because the instruments sit rather nicely along the 
             frequency boudaries that Moylan lays out for us in the text.
-            <br><br>While working through this exercize, think about the following questions:</p>
-        <p class="paragraph">
-            <ol>
-                <li>What instruments do you hear?</li>
-                <li>For each frequecy </li>
-            </ol>
-        </p>
+            <br><br>While working through this exercize, think about the questions posted above.</p>
     </div>
     <!-- Load the script that creates the RNBO device  -->
     <!-- Uncomment if you know the version of your exported RNBO patch to avoid dynamic loading -->
